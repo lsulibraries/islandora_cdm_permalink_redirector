@@ -12,13 +12,18 @@ function islandora_cdm_permalink_redirector_menu() {
 }
 
 function islandora_cdm_permalink_redirector_redirect($collection, $pointer) {
+  global $base_url;
+  $request = request_path();
+  $base = variable_get('islandora_url_redirector_base', $base_url);
   module_load_include('module', 'islandora_url_redirector');
   $path = "$collection/id/$pointer";
   $pid = islandora_url_redirector_query_solr($path);
   if ($pid) {
-    global $base_url;
-    $url = variable_get('islandora_url_redirector_base', $base_url);
-    $target_url = $url . "/islandora/object/" . $pid;
+    $target_url = $base . "/islandora/object/" . $pid;
     drupal_goto($target_url);
+  }
+  else {
+    drupal_set_message("$request was not found.", 'warning');
+    drupal_goto($base);
   }
 }
