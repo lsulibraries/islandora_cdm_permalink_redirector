@@ -1,0 +1,6 @@
+name = Islandora cDM Redirector
+description = "Handles redirects from cDM URLs that require processing beyond that provided by url redirector."
+package = Islandora Tools
+core = 7.x
+dependencies[] = islandora
+dependencies[] = islandora_url_redirector

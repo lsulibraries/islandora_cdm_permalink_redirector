@@ -1,0 +1,24 @@
+<?php
+
+function islandora_cdm_permalink_redirector_menu() {
+  return array(
+    'cdm/ref/collection/%/id/%' => array(
+      'type' => MENU_NORMAL_ITEM,
+      'page callback' => 'islandora_cdm_permalink_redirector_redirect',
+      'page arguments' => array(3, 5),
+      'access callback' => TRUE,
+    ),
+  );
+}
+
+function islandora_cdm_permalink_redirector_redirect($collection, $pointer) {
+  module_load_include('module', 'islandora_url_redirector');
+  $path = "$collection/id/$pointer";
+  $pid = islandora_url_redirector_query_solr($path);
+  if ($pid) {
+    global $base_url;
+    $url = variable_get('islandora_url_redirector_base', $base_url);
+    $target_url = $url . "/islandora/object/" . $pid;
+    drupal_goto($target_url);
+  }
+}
